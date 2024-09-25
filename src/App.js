@@ -1,24 +1,18 @@
-import logo from './logo.svg';
 import './App.css';
+import {useRef} from 'react';
 
+import { Workbook } from "@fortune-sheet/react";
+import "@fortune-sheet/react/dist/index.css"
 function App() {
+  const ref = useRef(null) 
+  const handleOnClick = () => {
+    console.log(ref.current.getSheet())
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+    <Workbook data={[{ name: "Sheet1" }]} ref={ref} />
+    <button onClick={handleOnClick}>Get Data</button>
+    </>
   );
 }
 
