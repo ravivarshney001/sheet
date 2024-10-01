@@ -21,11 +21,39 @@ function App() {
     if (ref.current) {
       const sheetData = ref.current.getSheet();
       window.currentSheetData = sheetData;
+      window.top.postMessage({
+        type: "sheetDataUpdated",
+        source:"sheetAcees",
+        data: sheetData
+      }, "*"); 
+      localStorage.setItem('sheetData', JSON.stringify(sheetData));
       console.log(sheetData, 'Latest sheet data');
     }
   };
 
-  window.resetSheet = () => {
+    // Listen for messages from the parent window
+    window.addEventListener("message", (event) => {
+        // Check the origin of the event for security
+        if (event.data.source !== "sheetAcees") {
+        return;
+        }
+    
+        // Handle the incoming messages
+        const { type } = event.data;
+    
+        switch (type) {
+        case "resetSheet":
+            resetSheet();
+            break;
+        case "updateSheetData":
+            updateSheetData();
+            break;
+        default:
+            console.log("Unknown action:", type);
+        }
+    });
+
+  const resetSheet = () => {
     let updatedJson = {
       "name": "Sheet1",
       "status": 1,
@@ -43,7 +71,7 @@ function App() {
     }
   }
 
-  window.updateSheetData = () => {
+  const updateSheetData = () => {
     updateSheet();
   }
 
