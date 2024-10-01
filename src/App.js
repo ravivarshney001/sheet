@@ -46,6 +46,7 @@ function App() {
             resetSheet();
             break;
         case "updateSheetData":
+            window.updateSheetData = event.data.sheetData;
             updateSheetData();
             break;
         default:
@@ -72,6 +73,7 @@ function App() {
   }
 
   const updateSheetData = () => {
+   
     updateSheet();
   }
 
