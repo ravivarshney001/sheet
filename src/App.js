@@ -24,7 +24,7 @@ function App() {
       window.top.postMessage({
         type: "sheetDataUpdated",
         source:"sheetAcees",
-        data: sheetData
+        sheetData: sheetData
       }, "*"); 
       console.log(sheetData, 'Latest sheet data');
     }
