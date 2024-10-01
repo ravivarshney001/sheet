@@ -26,7 +26,6 @@ function App() {
         source:"sheetAcees",
         data: sheetData
       }, "*"); 
-      localStorage.setItem('sheetData', JSON.stringify(sheetData));
       console.log(sheetData, 'Latest sheet data');
     }
   };
@@ -42,15 +41,18 @@ function App() {
         const { type } = event.data;
     
         switch (type) {
-        case "resetSheet":
-            resetSheet();
-            break;
-        case "updateSheetData":
-            window.updateSheetData = event.data.sheetData;
-            updateSheetData();
-            break;
-        default:
-            console.log("Unknown action:", type);
+            case "getSheet":
+                currentSheetData();
+                break;
+            case "resetSheet":
+                resetSheet();
+                break;
+            case "updateSheetData":
+                window.updateSheetData = event.data.sheetData;
+                updateSheetData();
+                break;
+            default:
+                console.log("Unknown action:", type);
         }
     });
 
@@ -73,8 +75,17 @@ function App() {
   }
 
   const updateSheetData = () => {
-   
     updateSheet();
+  }
+
+  const currentSheetData = () => {
+    const sheetData = ref.current.getSheet();
+    window.top.postMessage({
+      type: "sheetDataUpdated",
+      source:"sheetAcees",
+      isCurrentFlow:true,
+      sheetData: sheetData
+    }, "*"); 
   }
 
   const updateSheet = () => {
