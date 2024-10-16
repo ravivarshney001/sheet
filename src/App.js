@@ -58,6 +58,16 @@ function App() {
     };
   }, []); // Empty dependency array ensures this runs once when the component mounts
 
+  const sheetConfig = {
+    column: 26,
+    row: 50,
+    allowEdit: true,
+    showToolbar: true,
+    showFormulaBar: true,
+    showSheetTabs: false,
+    addRows: false
+  };
+
 
 
 
