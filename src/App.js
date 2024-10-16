@@ -12,7 +12,6 @@ function App() {
 
   async function initialize() {
     const cdnLink = getClientQueryParamValue('sheetUrl'); // Function to get the CDN link
-    // const cdnLink = "https://cdn.testbook.com/resources/productionimages/test.json" // Function to get the CDN link
 
     console.log('CDN Link:', cdnLink);
 
@@ -45,26 +44,17 @@ function App() {
     } else {
       setError('No CDN link available.');
       resetSheet();
-
     }
-  };
+  }
 
   useEffect(() => {
-    // Function to fetch data from the CDN link if it's available
     initialize();
+
+    // Cleanup the event listener when component unmounts
+    return () => {
+      window.removeEventListener("message", handleIncomingMessage);
+    };
   }, []); // Empty dependency array ensures this runs once when the component mounts
-
-
-  const sheetConfig = {
-    column: 26,
-    row: 50,
-    allowEdit: true,
-    showToolbar: true,
-    showFormulaBar: true,
-    showSheetTabs: false,
-    addRows: false
-  };
-
 
   const handleSheetChange = () => {
     if (ref.current) {
@@ -73,17 +63,12 @@ function App() {
     }
   };
 
-  // Listen for messages from the parent window
-  window.addEventListener("message", (event) => {
+  const handleIncomingMessage = (event) => {
     // Check the origin of the event for security
     if (event.data.source !== "sheetAcess") {
       return;
     }
-    if (event.data.source == "sendsheetAcess") {
-      return;
-    }
 
-    // Handle the incoming messages
     const { type } = event.data;
 
     switch (type) {
@@ -93,27 +78,36 @@ function App() {
       default:
         console.log("Unknown action:", type);
     }
-  });
+  };
+
+  // Listen for messages from the parent window
+  useEffect(() => {
+    window.addEventListener("message", handleIncomingMessage);
+
+    // Cleanup the event listener when the component unmounts
+    return () => {
+      window.removeEventListener("message", handleIncomingMessage);
+    };
+  }, []);
 
   const resetSheet = () => {
     let updatedJson = {
       "name": "Sheet1",
       "status": 1,
       "celldata": [],
-      "data":[]
-    }
+      "data": []
+    };
     setLoading(false);
     setEmptySheet(true);
-    setSheetData({updatedJson} );
-  
-  }
+    setSheetData(updatedJson); // Fixed typo: removed extra braces
+  };
 
   function getClientQueryParamValue(key, url = decodeURI(window.location.href)) {
     var arr = url.split('&' + key + '=');
-    if (arr.length == 1) {
+    if (arr.length === 1) {
       arr = url.split('?' + key + '=');
     }
-    if (arr.length == 1) {
+    if (arr.length === 1) {
       return '';
     }
     return arr[1].split('&')[0];
@@ -158,7 +152,7 @@ function App() {
       isCurrentFlow: true,
       sheetData: sheetData
     }, "*");
-  }
+  };
 
   return (
     <>
@@ -172,12 +166,8 @@ function App() {
       ) : loading ? (
         <div className='loader-wrapper'><div className="loader"></div></div>
       ) : null}
-  
-      {/* <button onClick={updateSheets}>Get Data</button> */}
-      {/* <button onClick={currentSheetData}>Get</button> */}
     </>
   );
-  
 }
 
 export default App;
