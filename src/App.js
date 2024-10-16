@@ -8,7 +8,6 @@ function App() {
   const [sheetActualData, setSheetData] = useState(null);
   const [showEmptySheet, setEmptySheet] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
   async function initialize() {
     const cdnLink = getClientQueryParamValue('sheetUrl'); // Function to get the CDN link
@@ -36,13 +35,13 @@ function App() {
         setLoading(false);
 
       } catch (err) {
-        setError(err.message);
+        console.error(err.message);
         resetSheet();
       } finally {
         setLoading(false);
       }
     } else {
-      setError('No CDN link available.');
+      console.error('No CDN link available.');
       resetSheet();
     }
   }
@@ -84,6 +83,7 @@ function App() {
     return () => {
       window.removeEventListener("message", handleIncomingMessage);
     };
+     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // Empty dependency array ensures this runs once when the component mounts
 
   const handleSheetChange = () => {
@@ -159,7 +159,7 @@ function App() {
 
   return (
     <>
-      {sheetActualData && (sheetActualData.data && sheetActualData.data.length || showEmptySheet) && !loading ? (
+     {sheetActualData && ((!loading && (sheetActualData.data && sheetActualData.data.length)) || showEmptySheet) ? (
         <Workbook
           {...sheetConfig}
           data={[sheetActualData]}
@@ -169,6 +169,7 @@ function App() {
       ) : loading ? (
         <div className='loader-wrapper'><div className="loader"></div></div>
       ) : null}
+
     </>
   );
 }
