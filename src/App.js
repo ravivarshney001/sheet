@@ -66,12 +66,13 @@ function App() {
 
     switch (type) {
       case "getSheet":
-        currentSheetData();
+        currentSheetData(event.data.qid);
         break;
       default:
         console.log("Unknown action:", type);
     }
   };
+
 
   useEffect(() => {
     initialize();
@@ -83,6 +84,7 @@ function App() {
     return () => {
       window.removeEventListener("message", handleIncomingMessage);
     };
+
      // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // Empty dependency array ensures this runs once when the component mounts
 
@@ -116,7 +118,7 @@ function App() {
     return arr[1].split('&')[0];
   }
 
-  const currentSheetData = () => {
+  const currentSheetData = (qid) => {
     let sheetData = JSON.parse(JSON.stringify(ref.current.getSheet()));
     const cell = ref.current.getSelection();
     let currentGridValue = document.getElementById('luckysheet-rich-text-editor')?.innerText?.trim(); // Safe access and trim to avoid empty spaces
@@ -153,6 +155,7 @@ function App() {
       type: "sheetDataUpdated",
       source: "sendsheetAcess",
       isCurrentFlow: true,
+      qid:qid,
       sheetData: sheetData
     }, "*");
   };
