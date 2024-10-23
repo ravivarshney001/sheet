@@ -123,7 +123,7 @@ function App() {
     const cell = ref.current.getSelection();
     let currentGridValue = document.getElementById('luckysheet-rich-text-editor')?.innerText?.trim(); // Safe access and trim to avoid empty spaces
 
-    if (cell.length && currentGridValue && sheetData.data.length) {
+    if (cell && cell.length && currentGridValue && sheetData.data.length) {
       const [selectedRow, selectedColumn] = [cell[0]?.row[0], cell[0]?.column[0]];
 
       // Ensure selected cell exists within the bounds of the sheet data
@@ -146,7 +146,7 @@ function App() {
         console.warn(`Invalid cell selection at row ${selectedRow}, column ${selectedColumn}.`);
       }
     } else {
-      if (!cell.length) console.warn('No cell selected.');
+      if (cell && !cell.length) console.warn('No cell selected.');
       if (!currentGridValue) console.warn('Grid value is empty.');
       if (!sheetData.data.length) console.warn('Sheet data is empty.');
     }
