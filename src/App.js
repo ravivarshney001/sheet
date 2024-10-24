@@ -66,7 +66,7 @@ function App() {
 
     switch (type) {
       case "getSheet":
-        currentSheetData(event.data.qid);
+        currentSheetData(event.data.qid,event.data.buttonAction);
         break;
       default:
         console.log("Unknown action:", type);
@@ -118,7 +118,7 @@ function App() {
     return arr[1].split('&')[0];
   }
 
-  const currentSheetData = (qid) => {
+  const currentSheetData = (qid,buttonAction) => {
     let sheetData = JSON.parse(JSON.stringify(ref.current.getSheet()));
     const cell = ref.current.getSelection();
     let currentGridValue = document.getElementById('luckysheet-rich-text-editor')?.innerText?.trim(); // Safe access and trim to avoid empty spaces
@@ -156,6 +156,7 @@ function App() {
       source: "sendsheetAcess",
       isCurrentFlow: true,
       qid:qid,
+      buttonAction:buttonAction,
       sheetData: sheetData
     }, "*");
   };
