@@ -68,6 +68,9 @@ function App() {
       case "getSheet":
         currentSheetData(event.data.qid,event.data.buttonAction);
         break;
+      case "resetSheet":
+        resetSheet();
+          break;
       default:
         console.log("Unknown action:", type);
     }
