@@ -31,7 +31,7 @@ function App() {
         }
 
         const jsonData = await response.json();
-        resetSheet();
+        // resetSheet();
         setSheetData({ ...jsonData });
         setLoading(false);
 
