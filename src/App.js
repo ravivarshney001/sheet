@@ -139,9 +139,24 @@ function App() {
           },
           "v": currentGridValue
         };
+        let cellDataForUpdating = 
+          {
+            "c": selectedColumn,
+            "r": selectedRow,
+            "v": {
+              "ct": {
+                "fa": "General",
+                "t": "g"
+              },
+              "m": currentGridValue,
+              "v": currentGridValue
+            }
+          }
+        
 
         // Update the cell data
         sheetData.data[selectedRow][selectedColumn] = currentCellData;
+        sheetData.celldata.push(cellDataForUpdating);
 
         // Log for verification
         console.log('Updated sheet data:', sheetData);
