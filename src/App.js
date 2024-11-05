@@ -31,7 +31,6 @@ function App() {
         }
 
         const jsonData = await response.json();
-        // resetSheet();
         setSheetData({ ...jsonData });
         setLoading(false);
 
@@ -68,7 +67,7 @@ function App() {
     switch (type) {
       case "getSheet":
         currentSheetData(event.data.qid,event.data.buttonAction);
-        break;
+          break;
       case "resetSheet":
         resetSheet();
           break;
